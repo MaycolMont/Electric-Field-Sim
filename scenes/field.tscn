@@ -1,0 +1,10 @@
+[gd_scene load_steps=4 format=3 uid="uid://dcnfondj8tv06"]
+
+[ext_resource type="Script" path="res://scripts/field.gd" id="1_wh8sx"]
+[ext_resource type="PackedScene" uid="uid://bo8utt6widqkh" path="res://scenes/particle.tscn" id="2_41oej"]
+[ext_resource type="PackedScene" uid="uid://bjupa728t8bl7" path="res://scenes/m_vector.tscn" id="3_0os2v"]
+
+[node name="Field" type="Node2D"]
+script = ExtResource("1_wh8sx")
+particle_scene = ExtResource("2_41oej")
+m_vector_scene = ExtResource("3_0os2v")

@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bo8utt6widqkh"]
+
+[ext_resource type="Script" path="res://scripts/particle.gd" id="1_nkrhk"]
+[ext_resource type="Texture2D" uid="uid://cbp3roolccwox" path="res://assets/electron.png" id="2_ledi6"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_1o7hv"]
+radius = 26.1725
+
+[node name="Particle" type="CharacterBody2D" groups=["particles"]]
+script = ExtResource("1_nkrhk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_1o7hv")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_ledi6")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+scale = Vector2(1.8, 1.906)

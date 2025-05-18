@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://bjupa728t8bl7"]
+
+[ext_resource type="Script" path="res://scripts/MVector.gd" id="1_s53mr"]
+[ext_resource type="Texture2D" uid="uid://bdwsfjhlyjuft" path="res://assets/sprites/vector_tip.svg" id="2_wr4a6"]
+
+[node name="MVector" type="RayCast2D" node_paths=PackedStringArray("_line2d") groups=["vectors_field"]]
+script = ExtResource("1_s53mr")
+_line2d = NodePath("Line2D")
+
+[node name="Line2D" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 0, 49)
+width = 2.0
+
+[node name="TipSprite2D" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(0, 47)
+scale = Vector2(0.05, 0.05)
+texture = ExtResource("2_wr4a6")
