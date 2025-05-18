@@ -70,6 +70,7 @@ func add_particle(charge: float) -> void:
 	_particles.append(particle)
 	particle.tree_exited.connect(_on_particle_remove.bind(particle))
 	add_child(particle)
+	print(particle.state)
 	if len(_particles) == 1:
 		if _vectors:
 			for vector in _vectors:

@@ -1,12 +1,11 @@
 extends CharacterBody2D
 class_name SimObject2D
 
-var current_state = state.MOVE
 enum state {MOVE, FIXED}
+var current_state = state.MOVE
 
 func _ready():
 	input_pickable = true
-	input_event.connect(_on_input_event)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta):
@@ -22,7 +21,7 @@ func _sim_motion():
 func _block() -> void:
 	pass
 	
-func _on_input_event(viewport, event, shape_idx):
+func _input_event(viewport, event, shape_idx):
 	if event.is_action_pressed("ok"):
 		current_state = state.MOVE if current_state == state.FIXED else state.FIXED
 	elif event.is_action_pressed("cancel"):
