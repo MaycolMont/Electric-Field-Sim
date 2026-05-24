@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 @export var _grid_size : float = 100
 @export var particle_scene : PackedScene
