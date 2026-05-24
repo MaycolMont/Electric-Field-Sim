@@ -1,16 +1,17 @@
 extends Control
 
 var min_square_size: int = 15
-var max_square_size: int = 40
-var square_size: int = 20
+var max_square_size: int = 30
+var square_size: int = 15
 var scale_factor: float = 1.0
 var grid_color: Color = Color(1.0, 1.0, 1.0, 1.0)
 var screen_size : Vector2
-var vertical_lines : Array[int] = []
-var horizontal_lines : Array[int] = []
+var vertical_lines : Array[float] = []
+var horizontal_lines : Array[float] = []
 var _vertical_nodes : Array[Line2D] = []
 var _horizontal_nodes : Array[Line2D] = []
 var _highlight_color: Color = Color(0.3, 0.6, 1.0, 1.0)
+var _offset: Vector2
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -24,7 +25,7 @@ func _process(delta: float) -> void:
 	_highlight_nearest(horizontal_lines, _horizontal_nodes, mouse.y, false)
 
 
-func _highlight_nearest(positions: Array[int], nodes: Array[Line2D], mouse_coord: float, is_vertical: bool) -> void:
+func _highlight_nearest(positions: Array[float], nodes: Array[Line2D], mouse_coord: float, is_vertical: bool) -> void:
 	var nearest_idx = -1
 	var nearest_dist = INF
 	for i in positions.size():
@@ -45,6 +46,14 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom out"):
 		_zoom_out()
 
+func _clear_lines() -> void:
+	for node in _vertical_nodes + _horizontal_nodes:
+		node.queue_free()
+	vertical_lines.clear()
+	horizontal_lines.clear()
+	_vertical_nodes.clear()
+	_horizontal_nodes.clear()
+
 func _draw_line(start: Vector2, end: Vector2) -> Line2D:
 	var line = Line2D.new()
 	line.width = 1.0
@@ -58,25 +67,49 @@ func _draw_lines() -> void:
 	var width = screen_size.x
 	var height = screen_size.y
 
-	# Draw vertical lines
-	for x in range(0, width/square_size):
-		var x_position : int = x * square_size
-		vertical_lines.append(x_position)
-		_vertical_nodes.append(_draw_line(Vector2(x_position, 0),
-				Vector2(x_position, height)))
+	var start_x = fmod(_offset.x, square_size)
+	if start_x < 0:
+		start_x += square_size
+	var start_y = fmod(_offset.y, square_size)
+	if start_y < 0:
+		start_y += square_size
 
-	# Draw horizontal lines
-	for y in range(0, height/square_size):
-		var y_position : int = y * square_size
-		horizontal_lines.append(y_position)
-		_horizontal_nodes.append(_draw_line(Vector2(0, y_position),
-				Vector2(width, y_position)))
+	for x in range(start_x, width + 1, square_size):
+		vertical_lines.append(x)
+		_vertical_nodes.append(_draw_line(Vector2(x, 0),
+				Vector2(x, height)))
+
+	for y in range(start_y, height + 1, square_size):
+		horizontal_lines.append(y)
+		_horizontal_nodes.append(_draw_line(Vector2(0, y),
+				Vector2(width, y)))
 
 func _zoom_in() -> void:
-	print_debug("Square size: ", square_size)
+	var mouse = get_global_mouse_position()
+	var grid_x = (mouse.x - _offset.x) / square_size
+	var grid_y = (mouse.y - _offset.y) / square_size
+
 	square_size += scale_factor
 	if square_size > max_square_size:
 		square_size = min_square_size
-	
+
+	_offset.x = mouse.x - grid_x * square_size
+	_offset.y = mouse.y - grid_y * square_size
+
+	_clear_lines()
+	_draw_lines()
+
 func _zoom_out() -> void:
-	pass
+	var mouse = get_global_mouse_position()
+	var grid_x = (mouse.x - _offset.x) / square_size
+	var grid_y = (mouse.y - _offset.y) / square_size
+
+	square_size -= scale_factor
+	if square_size < min_square_size:
+		square_size = max_square_size
+
+	_offset.x = mouse.x - grid_x * square_size
+	_offset.y = mouse.y - grid_y * square_size
+
+	_clear_lines()
+	_draw_lines()
