@@ -21,6 +21,7 @@ grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
 [node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1066587856]
+visible = false
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 1
 anchors_preset = 3
