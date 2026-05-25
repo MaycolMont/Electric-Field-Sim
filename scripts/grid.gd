@@ -13,32 +13,35 @@ var _horizontal_nodes : Array[Line2D] = []
 var _highlight_color: Color = Color(0.3, 0.6, 1.0, 1.0)
 var _offset: Vector2
 
-# Called when the node enters the scene tree for the first time.
+func hide_grid()-> void:
+	for node in _vertical_nodes:
+		node.hide()
+	
+	for node in _vertical_nodes:
+		node.hide()
+		
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	_draw_lines()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	var mouse = get_global_mouse_position()
-	_highlight_nearest(vertical_lines, _vertical_nodes, mouse.x, true)
-	_highlight_nearest(horizontal_lines, _horizontal_nodes, mouse.y, false)
+	var start_x = fmod(_offset.x, square_size)
+	if start_x < 0:
+		start_x += square_size
+	var start_y = fmod(_offset.y, square_size)
+	if start_y < 0:
+		start_y += square_size
 
+	var v_size = _vertical_nodes.size()
+	var h_size = _horizontal_nodes.size()
+	var v_idx = -1 if v_size == 0 else int(clamp(round((mouse.x - start_x) / square_size), 0, v_size - 1))
+	var h_idx = -1 if h_size == 0 else int(clamp(round((mouse.y - start_y) / square_size), 0, h_size - 1))
 
-func _highlight_nearest(positions: Array[float], nodes: Array[Line2D], mouse_coord: float, is_vertical: bool) -> void:
-	var nearest_idx = -1
-	var nearest_dist = INF
-	for i in positions.size():
-		var dist = abs(positions[i] - mouse_coord)
-		if dist < nearest_dist:
-			nearest_dist = dist
-			nearest_idx = i
-
-	for i in nodes.size():
-		if i == nearest_idx:
-			nodes[i].default_color = _highlight_color
-		else:
-			nodes[i].default_color = grid_color
+	for i in _vertical_nodes.size():
+		_vertical_nodes[i].default_color = _highlight_color if i == v_idx else grid_color
+	for i in _horizontal_nodes.size():
+		_horizontal_nodes[i].default_color = _highlight_color if i == h_idx else grid_color
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("zoom in"):

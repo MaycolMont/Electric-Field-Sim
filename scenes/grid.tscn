@@ -19,3 +19,32 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1066587856]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+alignment = 1
+
+[node name="Control" type="Control" parent="HBoxContainer" unique_id=1668152795]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+
+[node name="Line2D" type="Line2D" parent="HBoxContainer/Control" unique_id=1243585300]
+points = PackedVector2Array(0, 0, 101, 0)
+width = 3.0
+
+[node name="ScaleLabel" type="Label" parent="HBoxContainer" unique_id=662885373]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "1 m"
+text_direction = 1
